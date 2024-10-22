@@ -1,5 +1,6 @@
 from typing import List
 import random
+import argparse
 
 # 1. Функция проверки простоты числа
 def is_prime(x: int) -> bool:
@@ -28,14 +29,24 @@ def checksum(x: List[int]) -> int:
         result = (result + number) * 113 % MODULO
     return result
 
-# 4. Функция pipeline, которая выполняет все шаги
-def pipeline() -> int:
-    primes_list = primes(1000)
-    random.seed(100)
-    random.shuffle(primes_list)
-    return checksum(primes_list)
+# 4. Основная функция, которая принимает параметры из командной строки
+def main():
+    # Парсим аргументы командной строки
+    parser = argparse.ArgumentParser(description="Генерирование листа простых чисел и их микс.")
+    parser.add_argument('count', type=int, help="Количество простых чисел")
+    parser.add_argument('seed', type=int, help="Любое число для генерации")
+    args = parser.parse_args()
 
-# 5. Основной блок выполнения
+    # Генерация простых чисел
+    primes_list = primes(args.count)
+
+    # Перемешивание списка
+    random.seed(args.seed)
+    random.shuffle(primes_list)
+
+    # Печать каждого простого числа на новой строке
+    for prime in primes_list:
+        print(prime)
+
 if __name__ == "__main__":
-    result = pipeline()
-    print(result)
+    main()
